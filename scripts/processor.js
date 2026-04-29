@@ -24,20 +24,20 @@ async function processVideo(videoUrl) {
 
     console.log(`✅ ${captions.length} satır altyazı çekildi.`);
 
-    // Her satıra index ver, sadece ilk 150 satırı al
-    const lines = captions.slice(0, 150).map((c, i) => ({
+    // Her satıra index ver, daha geniş bir aralık al (400 satır ~15-20 dk video)
+    const lines = captions.slice(0, 400).map((c, i) => ({
       i,
       start: parseFloat((c.offset / 1000).toFixed(2)),
       end: parseFloat(((c.offset + c.duration) / 1000).toFixed(2)),
-      text: c.text.replace(/&amp;/g, '&').replace(/&#39;/g, "'").trim(),
+      text: c.text.replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').trim(),
     }));
 
-    // Transcript'i bölümlere ayır
+    // Transcript'i bölümlere ayır (Başlangıç, Orta, Son)
     const third = Math.floor(lines.length / 3);
     const sections = [
-      { label: 'BAŞLANGIÇ', lines: lines.slice(0, third) },
-      { label: 'ORTA',      lines: lines.slice(third, third * 2) },
-      { label: 'SON',       lines: lines.slice(third * 2) },
+      { label: 'BAŞLANGIÇ (0-%33)', lines: lines.slice(0, third) },
+      { label: 'ORTA (%33-%66)',      lines: lines.slice(third, third * 2) },
+      { label: 'SON (%66-%100)',       lines: lines.slice(third * 2) },
     ];
 
     const transcriptText = sections.map(s =>

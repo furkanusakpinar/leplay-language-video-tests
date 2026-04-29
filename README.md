@@ -1,16 +1,62 @@
-# React + Vite
+# 🎬 Voscreen Clone - AI-Powered Language Learning
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq_AI-F3B61F?style=for-the-badge&logo=google-gemini&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-Currently, two official plugins are available:
+Voscreen Clone is a modern, interactive web application designed to make English learning fun and engaging through YouTube video segments. Powered by AI, it automatically analyzes videos, extracts meaningful segments, and generates challenging quizzes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Key Features
 
-## React Compiler
+-   **🎯 Frame-Perfect Sync**: Millisecond-level accuracy using the official YouTube IFrame API for seamless video control.
+-   **🤖 AI Segmentation**: Automated extraction of high-quality learning segments using Groq (Llama 3.3).
+-   **💎 Premium UI**: A modern, dark-mode-first interface with glassmorphism effects and smooth animations.
+-   **🔄 Smart Shuffle**: Videos are randomly ordered every session using the Fisher-Yates algorithm.
+-   **🌍 Subtitle Support**: Toggleable native YouTube captions for better comprehension.
+-   **📈 Score System**: Earn points for correct answers and track your progress in real-time.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 Tech Stack
 
-## Expanding the ESLint configuration
+-   **Frontend**: React, Vite, Framer Motion (Animations), Lucide React (Icons).
+-   **AI Engine**: Node.js, Groq SDK (Llama 3.3), Youtube Transcript API.
+-   **Styling**: Vanilla CSS with modern custom properties and glassmorphism.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Getting Started
+
+1.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+
+2.  **Setup Environment Variables**:
+    Create a `.env` file in the root directory and add your Groq API key:
+    ```env
+    GROQ_API_KEY=your_api_key_here
+    ```
+
+3.  **Run Development Server**:
+    ```bash
+    npm run dev
+    ```
+
+## 🎥 Adding Videos (AI Processor)
+
+To populate the app with new content, run the AI processor script with a YouTube URL:
+
+```bash
+node scripts/processor.js "https://www.youtube.com/watch?v=VIDEO_ID"
+```
+
+*The script will fetch English transcripts, use AI to identify 3-4 distinct segments across the video, generate Turkish translations with tricky distractors, and save them to `src/data/videos.json`.*
+
+## 📂 Project Structure
+
+-   `src/App.jsx`: Main application logic and video player integration.
+-   `scripts/processor.js`: AI-powered script for data generation.
+-   `src/data/videos.json`: Local database for processed video metadata.
+-   `src/index.css`: Design system and global styles.
+
+---
+© 2026 Voscreen Clone - AI Language Learning Project.

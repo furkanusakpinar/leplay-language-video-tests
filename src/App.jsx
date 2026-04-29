@@ -98,11 +98,29 @@ export default function App() {
             e.target.seekTo(currentVideo.startTime, true);
           },
           onStateChange: (e) => {
-            // Bitiş zamanını burada da kontrol et
-            if (e.data === YT.PlayerState.ENDED && phaseRef.current === 'playing') {
+            const YTState = window.YT.PlayerState;
+            // Video gerçekten oynamaya başladığında timer'ı başlat (Sync sorunu çözümü)
+            if (e.data === YTState.PLAYING && phaseRef.current === 'playing') {
+              clearInterval(timerRef.current);
+              timerRef.current = setInterval(() => {
+                if (!ytPlayer.current || phaseRef.current !== 'playing') return;
+                const t = ytPlayer.current.getCurrentTime();
+                if (t >= currentVideo.endTime) {
+                  clearInterval(timerRef.current);
+                  ytPlayer.current.pauseVideo();
+                  setPhaseSync('quiz');
+                }
+              }, 100);
+            }
+            if (e.data === YTState.ENDED && phaseRef.current === 'playing') {
               clearInterval(timerRef.current);
               setPhaseSync('quiz');
             }
+          },
+          onError: (e) => {
+            console.error('YouTube Player Error:', e.data);
+            alert('Bu video oynatılamıyor (Embed kısıtlaması olabilir). Lütfen başka bir videoya geçin.');
+            nextVideo();
           }
         }
       });
@@ -155,9 +173,39 @@ export default function App() {
     return 'option-btn dimmed';
   };
 
-  const progress = ((currentIndex + 1) / videos.length) * 100;
+  const progress = videos.length > 0 ? ((currentIndex + 1) / videos.length) * 100 : 0;
 
-  return (
+  if (videos.length === 0) {
+    return (
+      <div className="app-wrapper">
+        <header className="header">
+          <div className="logo">
+            <div className="logo-icon"><Film color="white" size={20} /></div>
+            <h1 className="logo-title">Voscreen <span>Türkçe</span></h1>
+          </div>
+        </header>
+        <main className="main" style={{ textAlign: 'center', marginTop: '4rem' }}>
+          <div className="quiz-card">
+            <h3 style={{ marginBottom: '1rem' }}>Henüz video eklenmemiş!</h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+              Başlamak için terminale şu komutu yazarak video ekleyin:
+            </p>
+            <code style={{
+              display: 'block',
+              background: '#000',
+              padding: '1rem',
+              borderRadius: '8px',
+              marginTop: '1rem',
+              color: '#818cf8',
+              fontSize: '0.8rem'
+            }}>
+              node scripts/processor.js "YOUTUBE_URL"
+            </code>
+          </div>
+        </main>
+      </div>
+    );
+  }
     <div className="app-wrapper">
       <header className="header">
         <div className="logo">
