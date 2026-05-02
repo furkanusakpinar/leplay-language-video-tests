@@ -1,62 +1,73 @@
-# 🎬 Leplay - AI-Powered Language Learning
+<div align="center">
+  <h1>Leplay: AI-Powered Language Learning</h1>
+  <p>Learn English through highly curated, perfectly translated YouTube movie and TV show clips.</p>
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Groq](https://img.shields.io/badge/Groq_AI-F3B61F?style=for-the-badge&logo=google-gemini&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+  [![React](https://img.shields.io/badge/React-18.x-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
+  [![Vite](https://img.shields.io/badge/Vite-4.x-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+  [![Groq](https://img.shields.io/badge/Llama_3.3-AI-FF4A00?style=for-the-badge)](https://groq.com)
+</div>
 
-Leplay is a modern, interactive web application designed to make English learning fun and engaging through YouTube video segments. Powered by AI, it automatically analyzes videos, extracts meaningful segments, and generates challenging quizzes.
+<br />
 
-## ✨ Key Features
+## 🌟 Overview
 
--   **🎯 Frame-Perfect Sync**: Millisecond-level accuracy using the official YouTube IFrame API for seamless video control.
--   **🤖 AI Segmentation**: Automated extraction of high-quality learning segments using Groq (Llama 3.3).
--   **💎 Premium UI**: A modern, dark-mode-first interface with glassmorphism effects and smooth animations.
--   **🔄 Smart Shuffle**: Videos are randomly ordered every session using the Fisher-Yates algorithm.
--   **🌍 Subtitle Support**: Toggleable native YouTube captions for better comprehension.
--   **📈 Score System**: Earn points for correct answers and track your progress in real-time.
+**Leplay** is a modern, interactive language learning platform designed to help users master English by listening to natural, native conversations from YouTube videos. It recreates the classic "Leplay" experience but supercharges it with an automated **AI processing pipeline**.
 
-## 🛠 Tech Stack
+Instead of manually curating scenes and writing translations, the backend processor uses **Llama 3.3 (via Groq)** in a multi-stage pipeline to identify the best, short, punchy scenes, translate them flawlessly, and generate clever distractor options for the quizzes.
 
--   **Frontend**: React, Vite, Framer Motion (Animations), Lucide React (Icons).
--   **AI Engine**: Node.js, Groq SDK (Llama 3.3), Youtube Transcript API.
--   **Styling**: Vanilla CSS with modern custom properties and glassmorphism.
+![img](src/assets/sitedenss.png)
+
+
+## ✨ Features
+
+- **Automated Scene Extraction**: Paste any YouTube URL, and the AI automatically scans the subtitles to extract the best 1-2 sentence scenes.
+- **Flawless Localization**: Groq AI acts as a Netflix subtitle editor to guarantee complete, idiomatic Turkish translations without missing any sentences.
+- **Clever Distractors**: Generates plausible but incorrect distractor options for the quiz to test the user's comprehension.
+- **Perfect Video Sync**: Direct integration with the YouTube IFrame Player API ensures videos pause exactly at the millisecond the scene ends.
+- **Premium UI/UX**: Built with React and Framer Motion, featuring glassmorphism, fluid animations, and a responsive, immersive dark-mode design.
 
 ## 🚀 Getting Started
 
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
+### Prerequisites
+- Node.js (v18+)
+- A valid Groq API Key
 
-2.  **Setup Environment Variables**:
-    Create a `.env` file in the root directory and add your Groq API key:
-    ```env
-    GROQ_API_KEY=your_api_key_here
-    ```
+### Installation
 
-3.  **Run Development Server**:
-    ```bash
-    npm run dev
-    ```
+1. **Clone the repository** and install dependencies:
+   ```bash
+   npm install
+   ```
 
-## 🎥 Adding Videos (AI Processor)
+2. **Environment Setup**:
+   Create a `.env` file in the root directory and add your Groq API key:
+   ```env
+   GROQ_API_KEY=your_api_key_here
+   ```
 
-To populate the app with new content, run the AI processor script with a YouTube URL:
+3. **Run the Application**:
+   ```bash
+   npm run dev
+   ```
+   *The app will be available at `http://localhost:5173`.*
+
+## 🧠 Using the AI Processor
+
+To add new videos to the platform, use the built-in AI processor script. It automatically downloads subtitles, finds the best clips, translates them, and updates your database (`src/data/videos.json`).
 
 ```bash
-node scripts/processor.js "https://www.youtube.com/watch?v=VIDEO_ID"
+# Provide a valid YouTube URL
+node scripts/processor.js "https://www.youtube.com/watch?v=Jd10x8LiuBc"
 ```
 
-*The script will fetch English transcripts, use AI to identify 3-4 distinct segments across the video, generate Turkish translations with tricky distractors, and save them to `src/data/videos.json`.*
-
-## 📂 Project Structure
-
--   `src/App.jsx`: Main application logic and video player integration.
--   `scripts/processor.js`: AI-powered script for data generation.
--   `src/data/videos.json`: Local database for processed video metadata.
--   `src/index.css`: Design system and global styles.
+**Pipeline Workflow:**
+1. **Fetch**: `youtube-transcript` pulls the English captions.
+2. **Select**: AI (Llama 3.3) analyzes the text and selects 3-4 short, punchy segments.
+3. **Clean**: The script removes newlines to provide a clean string.
+4. **Translate & Generate**: AI provides a flawless, literal Turkish translation of the entire segment and generates a "wrong" option.
+5. **Save**: The processed data is pushed to `videos.json`.
 
 ---
-© 2026 Voscreen Clone - AI Language Learning Project.
+<div align="center">
+  <i>Built with ❤️ for English learners.</i>
+</div>

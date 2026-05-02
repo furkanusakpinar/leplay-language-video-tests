@@ -96,6 +96,7 @@ export default function App() {
         events: {
           onReady: (e) => {
             e.target.seekTo(currentVideo.startTime, true);
+            e.target.pauseVideo(); // Otomatik başlamayı engelle
           },
           onStateChange: (e) => {
             const YTState = window.YT.PlayerState;
@@ -210,9 +211,10 @@ export default function App() {
       <header className="header">
         <div className="logo">
           <div className="logo-icon"><Film color="white" size={20} /></div>
-          <h1 className="logo-title">Voscreen <span>Türkçe</span></h1>
+          <h1 className="logo-title">Learn <span>English</span></h1>
         </div>
         <div className="header-right">
+          <div className="level-badge">Seviye: B1</div>
           <div className="score-pill"><Trophy size={16} />{score} Puan</div>
           <div className="counter-pill">{currentIndex + 1} / {videos.length}</div>
         </div>
@@ -235,10 +237,24 @@ export default function App() {
           {phase === 'quiz' && (
             <div style={{
               position: 'absolute', inset: 0, zIndex: 15,
-              background: 'linear-gradient(to bottom, #080c18, #0f172a)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(0,0,0,0.85)',
+              backdropFilter: 'blur(10px)',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              border: '1px solid rgba(255,255,255,0.05)',
+              borderRadius: '24px'
             }}>
-              <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.85rem' }}>↓ Soruyu cevapla</span>
+              <div style={{
+                width: '60px', height: '60px', borderRadius: '50%',
+                background: 'rgba(99,102,241,0.2)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                marginBottom: '1rem',
+                border: '1px solid rgba(99,102,241,0.5)',
+                boxShadow: '0 0 20px rgba(99,102,241,0.3)'
+              }}>
+                <CheckCircle2 color="#818cf8" size={28} />
+              </div>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.5rem', color: '#fff' }}>Dinleme Tamamlandı</h2>
+              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem' }}>Aşağıdaki şıklardan doğru çeviriyi seçin ↓</span>
             </div>
           )}
 
@@ -259,7 +275,7 @@ export default function App() {
 
           {phase === 'playing' && (
             <div className="live-badge">
-              <span style={{ width:6, height:6, background:'white', borderRadius:'50%', display:'inline-block' }} />
+              <span style={{ width: 6, height: 6, background: 'white', borderRadius: '50%', display: 'inline-block' }} />
               CANLI
             </div>
           )}
@@ -338,7 +354,7 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      <footer className="footer">© 2026 Voscreen Türkçe · İngilizce Öğrenme Platformu</footer>
+      
     </div>
   );
 }
