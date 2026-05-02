@@ -91,7 +91,3 @@ node scripts/processor.js "https://www.youtube.com/watch?v=Jd10x8LiuBc"
 
 > **Note:** You do not need to refresh the page after adding a video; Leplay (React) automatically detects the new questions and makes them available for playback immediately.
 
----
-<div align="center">
-  <i>Built with ❤️ for English learners.</i>
-</div>
