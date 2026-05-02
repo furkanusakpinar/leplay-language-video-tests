@@ -28,44 +28,68 @@ Instead of manually curating scenes and writing translations, the backend proces
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Node.js (v18+)
-- A valid Groq API Key
+Follow these steps to run the project locally on your machine.
 
-### Installation
+### 1. Prerequisites
+- **Node.js**: Ensure you have Node.js (v18 or higher) installed on your system.
+- **Groq API Key**: The backend processor requires the Llama 3.3 model to curate and translate videos. You need to obtain a free API key from Groq.
 
-1. **Clone the repository** and install dependencies:
-   ```bash
-   npm install
-   ```
+### 2. Groq AI Setup
+Groq is required for the "automated video processing" pipeline to function.
+1. Go to the [Groq Console](https://console.groq.com/) and create an account.
+2. Navigate to the **API Keys** section from the left sidebar.
+3. Click the **Create API Key** button, generate a new key, and copy it.
 
-2. **Environment Setup**:
-   Create a `.env` file in the root directory and add your Groq API key:
-   ```env
-   GROQ_API_KEY=your_api_key_here
-   ```
+### 3. Project Setup
 
-3. **Run the Application**:
-   ```bash
-   npm run dev
-   ```
-   *The app will be available at `http://localhost:5173`.*
-
-## 🧠 Using the AI Processor
-
-To add new videos to the platform, use the built-in AI processor script. It automatically downloads subtitles, finds the best clips, translates them, and updates your database (`src/data/videos.json`).
+After cloning or downloading the repository, navigate to the project folder via your terminal and install the required dependencies:
 
 ```bash
-# Provide a valid YouTube URL
+# Install dependencies
+npm install
+```
+
+Create a new file named `.env` in the root directory of the project, and paste your copied Groq API key into it:
+
+```env
+GROQ_API_KEY=gsk_your_long_api_key_goes_here
+```
+
+### 4. Starting the Site
+
+Once the setup is complete, start the application by running:
+
+```bash
+npm run dev
+```
+
+Open your browser and navigate to the link provided in the terminal (usually `http://localhost:5173`) to start using **Leplay**!
+
+---
+
+## 🧠 Adding New Videos (AI Processor)
+
+The core strength of Leplay is its ability to transform any YouTube video into a perfect English comprehension test in seconds. To feed the system with new content, open a separate terminal window and use the following command:
+
+```bash
+# Append any valid YouTube URL to the command:
 node scripts/processor.js "https://www.youtube.com/watch?v=Jd10x8LiuBc"
 ```
 
-**Pipeline Workflow:**
-1. **Fetch**: `youtube-transcript` pulls the English captions.
-2. **Select**: AI (Llama 3.3) analyzes the text and selects 3-4 short, punchy segments.
-3. **Clean**: The script removes newlines to provide a clean string.
-4. **Translate & Generate**: AI provides a flawless, literal Turkish translation of the entire segment and generates a "wrong" option.
-5. **Save**: The processed data is pushed to `videos.json`.
+![img](src/assets/ss.png)
+
+
+### ⚙️ How the Pipeline Works
+
+| Stage | What it Does | Technology Used |
+| :--- | :--- | :--- |
+| **1. Fetch** | Downloads the original English subtitles directly from the YouTube video. | `youtube-transcript` |
+| **2. Select** | Reads the entire transcript and curates the most suitable, catchy 1-2 sentence scenes for language learning. | `Groq (Llama 3.3)` |
+| **3. Clean** | Clears out irregular spaces, line breaks (`\n`), and artifacts from the selected scenes. | `JavaScript (Regex)` |
+| **4. Translate & Distract** | Translates the scene flawlessly into idiomatic Turkish (Netflix dubbing quality). Then, it generates a "distractor" option that looks very similar but changes the meaning to test the user. | `Groq (Llama 3.3)` |
+| **5. Save** | Injects all the processed data into the `src/data/videos.json` file. The application updates instantly. | `Node.js (fs)` |
+
+> **Note:** You do not need to refresh the page after adding a video; Leplay (React) automatically detects the new questions and makes them available for playback immediately.
 
 ---
 <div align="center">

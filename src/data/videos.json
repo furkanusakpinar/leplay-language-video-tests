@@ -66,5 +66,141 @@
     ],
     "id": 1777714140536,
     "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 14.97,
+    "endTime": 18.31,
+    "script": "Excuse me? No, I don't think I will.",
+    "options": [
+      {
+        "text": "Özür dilerim? Hayır, sanırım yapmayacağım.",
+        "isCorrect": true
+      },
+      {
+        "text": "Özür dilerim? Evet, sanırım yapmayacağım.",
+        "isCorrect": false
+      }
+    ],
+    "id": 1777723336370,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 23.77,
+    "endTime": 32.01,
+    "script": "Please watch your language, Mr. Slade. You are in the Baird School not a barracks. Mr. Simms, I will give you one final opportunity to speak up.",
+    "options": [
+      {
+        "text": "Lütfen dilinize dikkat edin, Bay Slade. Baird Okulu'nda olduğunuzu unutmayın, bir kışla değil. Bay Simms, size son bir fırsat vereceğim, susma fırsatını kullanın.",
+        "isCorrect": false
+      },
+      {
+        "text": "Lütfen dilinize dikkat edin, Bay Slade. Baird Okulu'nda olduğunuzu unutmayın, bir kışla değil. Bay Simms, size son bir fırsat vereceğim, konuşma fırsatını kullanın.",
+        "isCorrect": true
+      }
+    ],
+    "id": 1777723336890,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 39.42,
+    "endTime": 43.52,
+    "script": "What the hell is that? What is your motto here?",
+    "options": [
+      {
+        "text": "Ne cehennemi bu? Burada mottanız nedir?",
+        "isCorrect": true
+      },
+      {
+        "text": "Ne cehennemi bu? Burada mottanız nerede?",
+        "isCorrect": false
+      }
+    ],
+    "id": 1777723337191,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 64.6,
+    "endTime": 72.2,
+    "script": "And what are you doing? You're gonna award George and destroy Charlie.",
+    "options": [
+      {
+        "text": "Peki sen ne yapıyorsun? George'u ödüllendireceksin ve Charlie'yi yok edeceksin.",
+        "isCorrect": true
+      },
+      {
+        "text": "Peki sen ne yapıyorsun? George'u ödüllendireceksin ve Charlie'yi kurtaracaksın.",
+        "isCorrect": false
+      }
+    ],
+    "id": 1777723337495,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 0.48,
+    "endTime": 7.88,
+    "script": "MR. TRASK: I'm going to recommend to the disciplinary committee that you be expelled, Mr. Simms.",
+    "options": [
+      {
+        "text": "BAY TRASK: Disiplin kuruluna seni okuldan atmanızı öneriyorum, Bay Simms.",
+        "isCorrect": true
+      },
+      {
+        "text": "BAY TRASK: Disiplin kuruluna seni okuldan aldırmanızı öneriyorum, Bay Simms.",
+        "isCorrect": false
+      }
+    ],
+    "id": 1777723350342,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 14.97,
+    "endTime": 18.31,
+    "script": "Excuse me? No, I don't think I will.",
+    "options": [
+      {
+        "text": "Özür dilerim? Evet, sanırım yapmayacağım.",
+        "isCorrect": false
+      },
+      {
+        "text": "Özür dilerim? Hayır, sanırım yapmayacağım.",
+        "isCorrect": true
+      }
+    ],
+    "id": 1777723350576,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 39.42,
+    "endTime": 43.52,
+    "script": "What the hell is that? What is your motto here?",
+    "options": [
+      {
+        "text": "Ne cehennemi bu? Buranın amblemi ne?",
+        "isCorrect": false
+      },
+      {
+        "text": "Ne cehennemi bu? Buranın mottosu ne?",
+        "isCorrect": true
+      }
+    ],
+    "id": 1777723350891,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 64.6,
+    "endTime": 72.2,
+    "script": "And what are you doing? You're gonna award George and destroy Charlie.",
+    "options": [
+      {
+        "text": "Peki sen ne yapıyorsun? George'u ödüllendireceksin ve Charlie'yi kurtaracaksın.",
+        "isCorrect": false
+      },
+      {
+        "text": "Peki sen ne yapıyorsun? George'u ödüllendireceksin ve Charlie'yi yok edeceksin.",
+        "isCorrect": true
+      }
+    ],
+    "id": 1777723351161,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
   }
 ]
