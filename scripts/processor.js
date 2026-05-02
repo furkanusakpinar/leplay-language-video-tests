@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Groq from 'groq-sdk';
 import { YoutubeTranscript } from 'youtube-transcript';
+import translate from 'translate-google';
 import 'dotenv/config';
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
@@ -45,73 +46,113 @@ async function processVideo(videoUrl) {
       s.lines.map(l => `[${l.i}] ${l.start}s-${l.end}s: ${l.text}`).join('\n')
     ).join('\n\n');
 
-    console.log('🤖 AI analizi başlıyor...');
+    console.log('🤖 AI Aşama 1: Sahneler seçiliyor...');
 
-    const chatCompletion = await groq.chat.completions.create({
+    // AŞAMA 1: Sadece sahne seçimi (Çeviri yok)
+    const selectionCompletion = await groq.chat.completions.create({
       messages: [
         {
           role: 'system',
-          content: `Sen İngilizce öğretmenisin. Sana numaralı altyazı satırları veriyorum.
+          content: `Sen bir kurgucusun. Altyazılardan dil öğrenimi için 3-4 anlamlı kesit seç.
 
-GÖREV: Her bölümden (BAŞLANGIÇ, ORTA, SON) en az 1 tane olmak üzere toplam 3-4 kesit seç.
+KESİN KURALLAR:
+1. Sahneler ÇOK KISA olmalı. Sadece 1 veya en fazla 2 cümleden oluşsun (ideal olarak 2-6 saniye).
+2. Uzun paragrafları, karmaşık tiradları SEÇME. Öğrenmesi kolay, akılda kalıcı kısa cümleler seç.
+3. [Music], [Applause] gibi ses efektlerini içeren satırları ASLA seçme.
+4. startLine ve endLine birbirine çok yakın olsun (örn: 0 ve 0, veya en fazla 0 ve 1).
 
-SEÇIM KURALLARI:
-1. Seçtiğin kesit birbirini takip eden 1-4 satırdan oluşsun.
-2. Satırlar birleşince tam ve anlamlı bir İngilizce cümle oluşturmalı.
-3. [Music], [Applause] içeren satırları ALMA.
-4. Yarım cümle ALMA.
-5. Her iki kesit arasında en az 25 saniye olmalı.
-
-ÇIKTI: Sadece JSON döndür. "startLine" ve "endLine" seçtiğin satırların INDEX numarasıdır ([i] kısmı).
-
-Zorunlu JSON Formatı:
-{"clips": [{"startLine": 0, "endLine": 2, "options": [{"text": "Doğal Türkçe çeviri", "isCorrect": true}, {"text": "Çok yakın ama yanlış çeviri", "isCorrect": false}]}]}`
+SADECE JSON döndür. Format: {"clips": [{"startLine": 0, "endLine": 1}]}`
         },
-        {
-          role: 'user',
-          content: transcriptText
-        }
+        { role: 'user', content: transcriptText }
       ],
       model: 'llama-3.3-70b-versatile',
-      temperature: 0.3,
+      temperature: 0,
       response_format: { type: 'json_object' }
     });
 
-    const aiResponse = JSON.parse(chatCompletion.choices[0].message.content);
-    const clips = aiResponse.clips || [];
-    if (clips.length === 0) throw new Error('AI uygun kesit seçemedi.');
+    const selectionResponse = JSON.parse(selectionCompletion.choices[0].message.content);
+    const selectedClips = selectionResponse.clips || [];
+    if (selectedClips.length === 0) throw new Error('AI uygun kesit seçemedi.');
 
-    // Index'leri gerçek zaman damgalarına çevir
-    const finalVideos = clips.map((clip, idx) => {
+    const finalVideos = [];
+
+    // AŞAMA 2 & 3: Google Translate ile Çeviri + AI ile Tuzak Şık Üretimi
+    for (let i = 0; i < selectedClips.length; i++) {
+      const clip = selectedClips[i];
       const startLine = lines[clip.startLine];
       const endLine = lines[Math.min(clip.endLine, lines.length - 1)];
 
-      if (!startLine || !endLine) {
-        console.log(`  ⚠ Geçersiz index: ${clip.startLine}-${clip.endLine}, atlanıyor.`);
-        return null;
+      if (!startLine || !endLine) continue;
+
+      // Satırları birleştir ve gereksiz yeni satırları temizle
+      const script = lines.slice(clip.startLine, clip.endLine + 1)
+        .map(l => l.text.replace(/\n/g, ' ').trim())
+        .join(' ')
+        .replace(/\s+/g, ' '); // Çift boşlukları temizle
+      
+      console.log(`\n⏳ İşleniyor [${startLine.start}s]: "${script.substring(0, 40)}..."`);
+      
+      // AŞAMA 2: AI ile Mükemmel Çeviri ve Tuzak Şık Üretimi
+      const translationCompletion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: `Sen dünyanın en iyi film çevirmenisin. HBO veya Netflix kalitesinde çeviri yapıyorsun.
+GÖREV: Verilen kısa İngilizce metni mükemmel, doğal ve deyimlere uygun şekilde Türkçeye çevir. Ve bir adet şaşırtıcı yanlış seçenek üret.
+
+KESİN KURALLAR:
+1. Metnin TAMAMINI çevir. Cümle atlama.
+2. "correct" seçeneği, metnin doğal dublaj çevirisidir (Google çevirisi gibi robotik olmasın, bağlama göre deyimsel olsun).
+3. "wrong" seçeneği, doğruya çok benzeyen ama anlamı tamamen bozan (ufak bir kelimesi değişmiş) versiyondur.
+4. ASLA açıklama yapma. Sadece çeviriyi yaz.
+
+SADECE JSON döndür.
+Format: {"correct": "Mükemmel doğal çeviri.", "wrong": "Tuzak bozuk çeviri."}`
+          },
+          {
+            role: 'user',
+            content: `İngilizce Metin: "${script}"`
+          }
+        ],
+        model: 'llama-3.3-70b-versatile',
+        temperature: 0.1,
+        response_format: { type: 'json_object' }
+      });
+
+      let transData;
+      try {
+        transData = JSON.parse(translationCompletion.choices[0].message.content);
+      } catch (e) {
+        console.error('Çeviri JSON hatası:', e);
+        continue;
       }
 
-      const script = lines
-        .slice(clip.startLine, clip.endLine + 1)
-        .map(l => l.text)
-        .join(' ');
+      const correctTranslation = transData.correct;
+      const wrongTranslation = transData.wrong;
 
-      console.log(`  ✓ [${startLine.start}s-${endLine.end}s] "${script.substring(0, 50)}..."`);
+      console.log(`  ✓ Doğru: ${correctTranslation}`);
+      console.log(`  ✗ Yanlış: ${wrongTranslation}`);
 
-      return {
+      // Seçenekleri rastgele karıştır
+      const options = [
+        { text: correctTranslation, isCorrect: true },
+        { text: wrongTranslation, isCorrect: false }
+      ].sort(() => Math.random() - 0.5);
+
+      finalVideos.push({
         startTime: startLine.start,
         endTime: endLine.end,
         script,
-        options: clip.options,
-        id: Date.now() + idx,
+        options,
+        id: Date.now() + i,
         url: videoUrl,
-      };
-    }).filter(Boolean);
+      });
+    }
 
     if (finalVideos.length === 0) throw new Error('Hiç geçerli kesit oluşturulamadı.');
 
     updateVideosFile(finalVideos);
-    console.log(`🎉 Başarılı! ${finalVideos.length} video eklendi.`);
+    console.log(`\n🎉 Başarılı! ${finalVideos.length} video eklendi.`);
 
   } catch (err) {
     console.error('❌ HATA:', err.message);

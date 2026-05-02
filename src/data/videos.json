@@ -1,1 +1,70 @@
-﻿
+[
+  {
+    "startTime": 14.97,
+    "endTime": 18.31,
+    "script": "Excuse me? No, I don't think I will.",
+    "options": [
+      {
+        "text": "Özür dilerim? Hayır, sanırım yapmayacağım.",
+        "isCorrect": true
+      },
+      {
+        "text": "Özür dilerim? Evet, sanırım yapmayacağım.",
+        "isCorrect": false
+      }
+    ],
+    "id": 1777714139566,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 39.42,
+    "endTime": 43.52,
+    "script": "What the hell is that? What is your motto here?",
+    "options": [
+      {
+        "text": "Ne cehennemi bu? Buranın mottosu ne?",
+        "isCorrect": true
+      },
+      {
+        "text": "Ne cehennemi bu? Buranın mottosu nedir?",
+        "isCorrect": false
+      }
+    ],
+    "id": 1777714139887,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 64.6,
+    "endTime": 72.2,
+    "script": "And what are you doing? You're gonna award George and destroy Charlie.",
+    "options": [
+      {
+        "text": "Peki sen ne yapıyorsun? George'u ödüllendireceksin ve Charlie'yi yok edeceksin.",
+        "isCorrect": true
+      },
+      {
+        "text": "Peki sen ne yapıyorsun? George'u ödüllendireceksin ve Charlie'yi kurtaracaksın.",
+        "isCorrect": false
+      }
+    ],
+    "id": 1777714140193,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  },
+  {
+    "startTime": 88.63,
+    "endTime": 94.51,
+    "script": "You're building a rat ship here. A vessel for sea going snitches.",
+    "options": [
+      {
+        "text": "Burada bir fare gemisi inşa ediyorsun. Denizde gezen muhbirler için bir gemi.",
+        "isCorrect": true
+      },
+      {
+        "text": "Burada bir fare gemisi inşa ediyorsun. Denizde gezen hırsızlar için bir gemi.",
+        "isCorrect": false
+      }
+    ],
+    "id": 1777714140536,
+    "url": "https://www.youtube.com/watch?v=Jd10x8LiuBc"
+  }
+]

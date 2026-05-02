@@ -137,8 +137,7 @@ export default function App() {
     ytPlayer.current.seekTo(currentVideo.startTime, true);
     ytPlayer.current.playVideo();
     setPhaseSync('playing');
-    startTimeChecker();
-  }, [currentVideo.startTime, startTimeChecker]);
+  }, [currentVideo.startTime]);
 
   const handleReplay = useCallback(() => {
     clearInterval(timerRef.current);
@@ -206,6 +205,7 @@ export default function App() {
       </div>
     );
   }
+  return (
     <div className="app-wrapper">
       <header className="header">
         <div className="logo">
